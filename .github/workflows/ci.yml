@@ -1,0 +1,72 @@
+name: CI - Build and run tests
+
+on: 
+  workflow_dispatch:
+    branches:
+      - '**' 
+
+  push:
+    branches:
+      - '**' 
+    
+
+jobs:
+  run-tests-and-linter:
+    runs-on: ubuntu-latest
+    steps:
+      # Check out repo
+      - name: Check out code
+        uses: actions/checkout@v2
+     
+      - name: Fetch all history for all tags and branches
+        run: git fetch --prune --unshallow
+          
+      # Setup and run GitVersion
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.7
+        with:
+          versionSpec: "5.x"
+
+      - name: Use GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.7
+      - name: Display the version
+        run: |
+          echo "Version: ${{ steps.gitversion.outputs.majorMinorPatch }}"
+  
+      # Set up Python
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with: 
+          python-version: 3.9
+          
+      # Install and configure Poetry
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+          
+      # Load cached venv if cache exists
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashfiles('**/poetry.lock') }}
+         
+      # Install dependencies if cache does not exist
+      - name: Installer dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root
+        
+      # Install project dependencies
+      - name: Install Poetry library
+        run: poetry install --no-interaction
+        
+      # Run test suite
+      # Need an if pytest installed wrapper here
+      # Install pytest
+      - name: Test with pytest
+        run: poetry run pytest tests/
