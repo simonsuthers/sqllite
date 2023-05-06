@@ -22,9 +22,10 @@ class CreateDatabase:
 
 
     def create_orders_table(self):
+        self._connection.execute('''DROP TABLE IF EXISTS Orders;''')
 
         self._connection.execute('''
-                                CREATE TABLE IF NOT EXISTS Orders
+                                CREATE TABLE Orders
                                 (
                                 [OrderId] INTEGER PRIMARY KEY AUTOINCREMENT, 
                                 [OrderNumber] INTEGER NOT NULL, 
@@ -35,7 +36,9 @@ class CreateDatabase:
                                 [PaymentBillingCode] TEXT NOT NULL,
                                 [PaymentDate] TEXT NOT NULL,
                                 UNIQUE([OrderNumber]),
-                                UNIQUE([ClientId], [ProductId], [PaymentDate])
+                                UNIQUE([ClientId], [ProductId], [PaymentDate]),
+                                FOREIGN KEY(ClientId) REFERENCES Clients(ClientId),
+                                FOREIGN KEY(ProductId) REFERENCES Products(ProductId)
                                 )
                                 ''')
 
@@ -43,25 +46,28 @@ class CreateDatabase:
 
 
     def create_products_table(self):
+
+        self._connection.execute('''DROP TABLE IF EXISTS Products;''')
           
         self._connection.execute('''
-                CREATE TABLE IF NOT EXISTS Products
+                CREATE TABLE Products
                 (
-                [ProductId] INTEGER PRIMARY KEY AUTOINCREMENT, 
+                [ProductId] INTEGER PRIMARY KEY AUTOINCREMENT,
                 [ProductName] TEXT NOT NULL,
                 [ProductType] TEXT NOT NULL,
                 [UnitPrice] REAL NOT NULL,
                 [Currency] TEXT NOT NULL
-                )
+                );
                 ''')
 
         self._connection.commit()
 
 
     def create_clients_table(self):
+        self._connection.execute('''DROP TABLE IF EXISTS Clients;''')
 
         self._connection.execute('''
-                                CREATE TABLE IF NOT EXISTS Clients
+                                CREATE TABLE Clients
                                 (
                                 [ClientId] INTEGER PRIMARY KEY, 
                                 [ClientName] TEXT NOT NULL,

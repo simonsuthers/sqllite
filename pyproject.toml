@@ -7,6 +7,9 @@ authors = ["Simon Suthers <simonsuthers@yahoo.co.uk>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 pytest = "^7.3.1"
+SQLAlchemy = "^2.0.12"
+pandas = "^2.0.1"
+openpyxl = "^3.1.2"
 
 [tool.poetry.dev-dependencies]
 
