@@ -5,13 +5,18 @@ class CreateDatabase:
 
     def __init__(self, dbname: str='mydb.db'):    
         try:
+            self._dbname = dbname
             self._connection = sqlite3.connect(dbname)
         except:
             print('Error')
 
 
     @property 
-    def connection(self):
+    def dbname(self):
+        return self._dbname
+
+    @property 
+    def Connection(self) -> sqlite3.Connection:
         return self._connection
 
 
@@ -48,7 +53,7 @@ class CreateDatabase:
     def create_products_table(self):
 
         self._connection.execute('''DROP TABLE IF EXISTS Products;''')
-          
+        
         self._connection.execute('''
                 CREATE TABLE Products
                 (
@@ -56,7 +61,8 @@ class CreateDatabase:
                 [ProductName] TEXT NOT NULL,
                 [ProductType] TEXT NOT NULL,
                 [UnitPrice] REAL NOT NULL,
-                [Currency] TEXT NOT NULL
+                [Currency] TEXT NOT NULL,
+                UNIQUE([ProductName])
                 );
                 ''')
 
@@ -67,17 +73,18 @@ class CreateDatabase:
         self._connection.execute('''DROP TABLE IF EXISTS Clients;''')
 
         self._connection.execute('''
-                                CREATE TABLE Clients
-                                (
-                                [ClientId] INTEGER PRIMARY KEY, 
-                                [ClientName] TEXT NOT NULL,
-                                [DeliveryAddress] TEXT NOT NULL,
-                                [DeliveryCity] TEXT NOT NULL,
-                                [DeliveryPostcode] TEXT NOT NULL,
-                                [DeliveryCountry] TEXT NOT NULL,
-                                [DeliveryContactNumber] TEXT NULL
-                                )
-                                ''')
+                            CREATE TABLE Clients
+                            (
+                            [ClientId] INTEGER PRIMARY KEY, 
+                            [ClientName] TEXT NOT NULL,
+                            [DeliveryAddress] TEXT NOT NULL,
+                            [DeliveryCity] TEXT NOT NULL,
+                            [DeliveryPostcode] TEXT NOT NULL,
+                            [DeliveryCountry] TEXT NOT NULL,
+                            [DeliveryContactNumber] TEXT NULL,
+                            UNIQUE([ClientName])
+                            )
+                            ''')
 
         self._connection.commit()
 

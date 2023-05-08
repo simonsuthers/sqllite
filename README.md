@@ -5,4 +5,8 @@
 To run the tests, run the following scripts:
 ```
 pytest -s tests/test_create_database.py
+pytest -s tests/test_client.py
+pytest -s tests/test_product.py
+pytest -s tests/test_order.py
+pytest -s tests/test_add_data.py
 ```
