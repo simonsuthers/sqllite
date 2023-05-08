@@ -14,8 +14,7 @@ class Test_TestClient():
     def test_Client_insert_client_returns_id(self, sql_database):
 
         # arrange
-        database = CreateDatabase("file:cachedb?mode=memory&cache=shared")
-        #database = CreateDatabase(sql_database)
+        database = CreateDatabase(sql_database)
         database.create_all_objects()
         conn = database.Connection
         client = Client(conn)
@@ -121,6 +120,40 @@ class Test_TestClient():
         
         # assert
         assert id1 == id2
+
+
+    def test_Client_insert_client_makes_country_title_case(self, sql_database):
+
+        # arrange
+        database = CreateDatabase(sql_database)
+        database.create_all_objects()
+        conn = database.Connection
+        client = Client(conn)
+        
+        # act
+        id1 = client._insert_client("MacGyver Inc", "72 Academy Street", "Swindon", "SN4 9QP", "UNITED KINGDOM", "+44 7911 843910")
+        results = client.get_all_clients()
+
+        # assert
+        assert results[0][5] == "United Kingdom"
+        assert results[0][5] != "UNITED KINGDOM"
+
+
+    def test_Client_insert_client_makes_city_title_case(self, sql_database):
+
+        # arrange
+        database = CreateDatabase(sql_database)
+        database.create_all_objects()
+        conn = database.Connection
+        client = Client(conn)
+        
+        # act
+        id1 = client._insert_client("MacGyver Inc", "72 Academy Street", "SWINDON", "SN4 9QP", "UNITED KINGDOM", "+44 7911 843910")
+        results = client.get_all_clients()
+
+        # assert
+        assert results[0][3] == "Swindon"
+        assert results[0][3] != "SWINDON"
 
 
     def test_Client_get_all_client_returns_correct_results(self, sql_database):

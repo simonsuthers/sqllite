@@ -17,7 +17,7 @@ class Test_TestAddData():
     def test_AddData_adds_orders_from_excel(self, sql_database):
 
         # arrange
-        database = CreateDatabase("file:cachedb?mode=memory&cache=shared")
+        database = CreateDatabase(sql_database)
         database.create_all_objects()
         conn = database.Connection
 
@@ -38,7 +38,7 @@ class Test_TestAddData():
     def test_AddData_adds_orders_from_csv(self, sql_database):
 
         # arrange
-        database = CreateDatabase("file:cachedb?mode=memory&cache=shared")
+        database = CreateDatabase(sql_database)
         database.create_all_objects()
         conn = database.Connection
 

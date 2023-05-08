@@ -2,9 +2,7 @@ import sqlite3
 import logging
 from typing import Optional, Any
 
-from src.create_database import CreateDatabase
-from src.product import Product
-from src.client import Client
+
 
 
 class Order:
@@ -47,19 +45,3 @@ class Order:
 
         return result
 
-        
-if __name__ == "__main__":
-    database = CreateDatabase("file:cachedb?mode=memory&cache=shared")
-    database.create_all_objects()
-    conn = database.Connection
-    product = Product(conn)
-    client = Client(conn)
-    order = Order(conn)
-    #id = product.get_product_id("Piano")
-    product_id = product.add_product("Piano", "Keyboard", 4700, "GBP")
-    print(product_id)
-    client_id = client.add_client("MacGyver Inc", "72 Academy Street", "Swindon", "SN4 9QP", "United Kingdom", "+44 7911 843910")
-    print(client_id)
-    order_id = order.add_order("PO0060504-1", client_id, product_id, 3, "Debit", "PO0060504-20210321", "21/03/2021")
-    print(order_id)
-    print(order.get_all_orders())

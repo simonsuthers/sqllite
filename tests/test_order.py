@@ -16,7 +16,7 @@ class Test_TestOrder():
     def test_Order_add_order_returns_id(self, sql_database):
 
         # arrange
-        database = CreateDatabase("file:cachedb?mode=memory&cache=shared")
+        database = CreateDatabase(sql_database)
         database.create_all_objects()
         conn = database.Connection
         product = Product(conn)
@@ -36,7 +36,7 @@ class Test_TestOrder():
     def test_Order_get_all_orders_returns_results(self, sql_database):
 
         # arrange
-        database = CreateDatabase("file:cachedb?mode=memory&cache=shared")
+        database = CreateDatabase(sql_database)
         database.create_all_objects()
         conn = database.Connection
         product = Product(conn)

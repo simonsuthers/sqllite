@@ -61,7 +61,7 @@ class AddData:
             if isinstance(row["PaymentDate"], datetime.datetime):
                 date = row["PaymentDate"].strftime('%Y-%m-%d %X')
             else:
-                date = datetime.datetime.strptime(str(row["PaymentDate"]), '%d/%m/%Y')
+                date = datetime.datetime.strptime(str(row["PaymentDate"]), '%d/%m/%Y').strftime('%Y-%m-%d %X')
 
             order_id = order.add_order(order_number=row["OrderNumber"],
                                         client_id=client_id,

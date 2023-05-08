@@ -10,6 +10,17 @@ main.py
 
 This has been tested with Python 3.9
 
+The *main.py* file does the following:
+* Builds database using create_database.py
+* Adds data to database using add_data.py
+* Displays data added to the database
+
+The class *AddData* in add_data.py has two main methods:
+* add_orders_from_excel
+    * Adds data from a given xlsx workbook
+* add_orders_from_csv
+    * Adds data from a given csv file
+
 ## Tests
 
 To run the tests, run the following scripts:

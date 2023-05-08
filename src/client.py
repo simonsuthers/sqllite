@@ -2,8 +2,6 @@ import sqlite3
 import logging
 from typing import Optional, Any
 
-from src.create_database import CreateDatabase
-
 
 class Client:
     def __init__(self, connection: sqlite3.Connection) -> None:
@@ -42,6 +40,9 @@ class Client:
                     delivery_country: str,
                     delivery_contact_number: str) -> int:
 
+        delivery_country = delivery_country.title()
+        delivery_city = delivery_city.title()
+
         sql = ''' INSERT INTO Clients
                 (ClientName, DeliveryAddress, DeliveryCity, DeliveryPostcode, DeliveryCountry, DeliveryContactNumber)
                 VALUES(?,?,?,?,?,?) '''
@@ -73,13 +74,3 @@ class Client:
         return result
 
         
-if __name__ == "__main__":
-    database = CreateDatabase("file:cachedb?mode=memory&cache=shared")
-    database.create_all_objects()
-    conn = database.Connection
-    client = Client(conn)
-    #id = product.get_product_id("Piano")
-    id = client._insert_client("MacGyver Inc", "72 Academy Street", "Swindon", "SN4 9QP", "United Kingdom", "+44 7911 843910")
-    print(id)
-    id2 = client.add_client("MacGyver Inc", "72 Academy Street", "Swindon", "SN4 9QP", "United Kingdom", "+44 7911 843910")
-    print(id2)

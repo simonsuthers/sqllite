@@ -2,8 +2,6 @@ import sqlite3
 import logging
 from typing import Optional
 
-from src.create_database import CreateDatabase
-
 
 class Product:
     def __init__(self, connection: sqlite3.Connection) -> None:
@@ -57,16 +55,3 @@ class Product:
         self._connection.commit()
 
         return result
-
-        
-if __name__ == "__main__":
-    #database = CreateDatabase("temp.db")
-    database = CreateDatabase("file:cachedb?mode=memory&cache=shared")
-    database.create_all_objects()
-    conn = database.Connection
-    product = Product(conn)
-    #id = product.get_product_id("Piano")
-    id = product.add_product("Piano1", "Keyboard", 4700, "GBP")
-    print(id)
-    id1 = product.add_product("Piano1", "Keyboard", 4700, "GBP")
-    print(id1)
