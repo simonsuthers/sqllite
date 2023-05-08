@@ -8,6 +8,8 @@ To run the script, execute the file in the root folder:
 main.py
 ```
 
+This has been tested with Python 3.9
+
 ## Tests
 
 To run the tests, run the following scripts:
