@@ -4,10 +4,10 @@ import pandas as pd
 import logging
 import datetime
 
-from product import Product
-from client import Client
-from order import Order
-from create_database import CreateDatabase
+from src.product import Product
+from src.client import Client
+from src.order import Order
+from src.create_database import CreateDatabase
 
 
 class AddData:

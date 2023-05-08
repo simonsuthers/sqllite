@@ -2,9 +2,9 @@ import sqlite3
 import logging
 from typing import Optional, Any
 
-from create_database import CreateDatabase
-from product import Product
-from client import Client
+from src.create_database import CreateDatabase
+from src.product import Product
+from src.client import Client
 
 
 class Order:
