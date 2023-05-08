@@ -2,6 +2,7 @@ import sqlite3
 from typing import Optional, Any
 import pandas as pd
 import logging
+import datetime
 
 from product import Product
 from client import Client
@@ -30,6 +31,14 @@ class AddData:
             self._add_order(row)
 
 
+    def add_orders_from_csv(self, csv_path: str = "src/Orders2023.csv"):
+
+        df: pd.DataFrame = pd.read_csv(csv_path)
+
+        for index, row in df.iterrows():
+            self._add_order(row)
+
+
     def _add_order(self, row: pd.Series) -> None:
         try:
             client = Client(self._connection)  
@@ -47,13 +56,20 @@ class AddData:
                                             currency=row["Currency"])
 
             order = Order(self._connection)
+
+            date: str
+            if isinstance(row["PaymentDate"], datetime.datetime):
+                date = row["PaymentDate"].strftime('%Y-%m-%d %X')
+            else:
+                date = datetime.datetime.strptime(str(row["PaymentDate"]), '%d/%m/%Y')
+
             order_id = order.add_order(order_number=row["OrderNumber"],
                                         client_id=client_id,
                                         product_id=product_id,
                                         product_quantity=row["ProductQuantity"],
                                         payment_type=row["PaymentType"],
                                         payment_billing_code=row["PaymentBillingCode"],
-                                        payment_date=row["PaymentDate"].strftime('%Y-%m-%d %X')
+                                        payment_date=date
                                         )
 
 
